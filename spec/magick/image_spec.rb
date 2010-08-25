@@ -28,6 +28,10 @@ module Magick
           @image.path.should == "#{fixture_path}/awesome.jpg"
         end
         
+        it "should know the file size" do
+          @image.size.should == 72467
+        end
+        
         it "should be valid" do
           @image.should be_valid
         end

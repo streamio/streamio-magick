@@ -4,12 +4,13 @@
 # identify: no decode delegate for this image format `file.ext' @ error/constitute.c/ReadImage/532.
 
 class Magick::Image
-  attr_reader :width, :height, :codec, :path
+  attr_reader :width, :height, :codec, :path, :size
   
   def initialize(path)
     raise Errno::ENOENT, "the file '#{path}' does not exist" unless File.exists?(path)
     
     @path = escape(path)
+    @size = File.size(path)
     
     stdin, stdout, stderr = Open3.popen3("identify '#{path}'") # Output will land in stderr
 
