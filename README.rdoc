@@ -1,0 +1,51 @@
+= Streamio Magick
+
+Simple yet powerful wrapper around imagemagick cli tools for reading metadata and transcoding images.
+
+== Installation
+
+  (sudo) gem install streamio-magick
+
+You also need to make sure to have imagemagick installed and that the commands identify and convert are available to the ruby process.
+
+This version is written against an imagemagick build from august 2010. So no guaranteed compatability with much earlier (or much later) versions.
+
+== Usage
+
+=== Require the gem
+
+  require 'rubygems'
+  require 'streamio-magick'
+
+=== Reading Metadata
+
+  image = Magick::Image.new("path/to/image.png")
+  
+  image.width # 640 (width of the image in pixels)
+  image.height # 480 (height of the image in pixels)
+  image.size # 455546 (filesize in bytes)
+  image.codec # "PNG"
+  
+  image.valid? # true (would be false if identify fails to read the image)
+  
+=== Transcoding
+
+First argument is the output file path.
+  
+  image.transcode("image.jpg") # Transcode to jpg format
+
+Give custom command line options for the convert command with a string.
+
+  image.transcode("image.jpg", "-resize 320x240")
+
+The transcode function returns an Image object for the encoded file.
+
+  transcoded_image = image.transcode("image.jpg", "-resize 320x240")
+
+  transcoded_image.width # 320
+  transcoded_image.height # 240
+  transcoded_image.codec # "JPEG"
+  
+== Copyright
+
+Copyright (c) 2010 Streamio Networks AB. See LICENSE for details.
