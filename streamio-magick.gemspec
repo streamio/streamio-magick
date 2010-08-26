@@ -18,6 +18,6 @@ Gem::Specification.new do |s|
   
   s.add_development_dependency(%q<rspec>, ["= 1.3.0"])
 
-  s.files        = Dir.glob("lib/**/*") + %w(README.rdoc)
+  s.files        = Dir.glob("lib/**/*") + %w(README.rdoc LICENSE)
   s.require_path = 'lib'
 end
