@@ -1,4 +1,4 @@
 module Magick
-  class Error < Exception
+  class Error < StandardError
   end
 end
