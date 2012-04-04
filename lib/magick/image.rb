@@ -37,7 +37,7 @@ class Magick::Image
     out = stdout.read
     err = stderr.read
     
-    raise err if err.length > 0
+    raise Magick::Error, err if err.length > 0
     
     self.class.new(output_file)
   end

@@ -138,6 +138,19 @@ module Magick
           }.not_to raise_error
         end
       end
+      
+      context "a deleted image" do
+        before(:each) do
+          new_path = "#{@image.path}.copy"
+          FileUtils.cp(@image.path, new_path)
+          @image = Image.new(new_path)
+          FileUtils.rm(new_path)
+        end
+
+        it "should raise error" do
+          expect { @image.transcode("#{tmp_path}/awesome.png") }.to raise_error(Magick::Error, /no such file/i)
+        end
+      end
     end
   end
 end
