@@ -133,9 +133,9 @@ module Magick
       
       context "with resize using sophisticated geometry" do
         it "should not crash due to over agressive escaping" do
-          expect {  
+          expect {
             @image.transcode("#{tmp_path}/awesome.png", "-resize '3220x2240>'") 
-          }.to_not raise_error
+          }.not_to raise_error
         end
       end
     end
