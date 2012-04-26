@@ -9,17 +9,13 @@ class Magick::Image
   def initialize(path)
     raise Errno::ENOENT, "the file '#{path}' does not exist" unless File.exists?(path)
     
-    @path = escape(path)
+    @path = path
     @size = File.size(path)
     
-    stdin, stdout, stderr = Open3.popen3("identify '#{path}'") # Output will land in stderr
-
-    out = stdout.read
-    err = stderr.read
-    
+    out = Open3.popen3("identify #{Shellwords.escape(path)}") { |stdin, stdout, stderr| stdout.read }
     @valid = out.length > 0
     
-    if valid?
+    if @valid?
       filename, @codec, resolution, etc = out.split
       
       @width = resolution.split("x").first.to_i
@@ -32,19 +28,12 @@ class Magick::Image
   end
   
   def transcode(output_file, parameters = "")
-    stdin, stdout, stderr = Open3.popen3("convert #{path} #{escape(parameters)} #{output_file}")
-    
-    out = stdout.read
-    err = stderr.read
+    err = Open3.popen3("convert #{Shellwords.escape(path)} #{parameters} #{Shellwords.escape(output_file)}") do |stdin, stdout, stderr|
+    	stderr.read
+    end
     
     raise Magick::Error, err if err.length > 0
     
     self.class.new(output_file)
-  end
-  
-  protected
-  def escape(path)
-    map  =  { '\\' => '\\\\', '</' => '<\/', "\r\n" => '\n', "\n" => '\n', "\r" => '\n', '"' => '\\"' }
-    path.gsub(/(\\|<\/|\r\n|[\n\r"])/) { map[$1] }
   end
 end
