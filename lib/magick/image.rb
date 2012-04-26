@@ -15,7 +15,7 @@ class Magick::Image
     out = Open3.popen3("identify #{Shellwords.escape(path)}") { |stdin, stdout, stderr| stdout.read }
     @valid = out.length > 0
     
-    if @valid?
+    if @valid
       filename, @codec, resolution, etc = out.split
       
       @width = resolution.split("x").first.to_i
@@ -28,9 +28,7 @@ class Magick::Image
   end
   
   def transcode(output_file, parameters = "")
-    err = Open3.popen3("convert #{Shellwords.escape(path)} #{parameters} #{Shellwords.escape(output_file)}") do |stdin, stdout, stderr|
-    	stderr.read
-    end
+    err = Open3.popen3("convert #{Shellwords.escape(path)} #{parameters} #{Shellwords.escape(output_file)}") { |stdin, stdout, stderr| stderr.read }
     
     raise Magick::Error, err if err.length > 0
     
