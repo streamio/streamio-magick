@@ -17,7 +17,7 @@ class Magick::Image
     out = Open3.popen3("identify #{Shellwords.escape(path)}") { |stdin, stdout, stderr| stdout.read }
     @valid = out.length > 0
     
-    if @valid
+    if valid?
       filename, @codec, resolution, etc = out.split
       
       @width = resolution.split("x").first.to_i
