@@ -3,6 +3,8 @@
 # Error example:
 # identify: no decode delegate for this image format `file.ext' @ error/constitute.c/ReadImage/532.
 
+require 'shellwords'
+
 class Magick::Image
   attr_reader :width, :height, :codec, :path, :size
   
