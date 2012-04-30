@@ -18,5 +18,5 @@ task :publish do
   sh "git tag v#{Magick::VERSION}"
   sh "git push origin v#{Magick::VERSION}"
   sh "git push origin master"
-  sh "git clean -fd"
+  sh "rm streamio-ffmpeg-#{Magick::VERSION}.gem"
 end
